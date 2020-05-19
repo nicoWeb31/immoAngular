@@ -7,16 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  solde = true;
-  title = 'imoAng';
-  color = true;
 
 
-  getSoldValue(){
-    if(this.solde){
-      return 'green';
-    }else{
-      return 'red';
-    }
-  }
 }

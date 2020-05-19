@@ -9,7 +9,7 @@ export class HeaderComponent implements OnInit {
 
   //interpolation de variable
   title = "Ma super agence";
-  isDisable = true;
+  isDisable = false;
   iScolor = "black";
 
 

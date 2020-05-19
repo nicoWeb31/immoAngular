@@ -7,9 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  //interpolation de variable
+  title = "Ma super agence";
+  isDisable = true;
+  iScolor = "black";
+
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+
+
+  aClick(){
+    this.isDisable = !this.isDisable;
+  }
 }

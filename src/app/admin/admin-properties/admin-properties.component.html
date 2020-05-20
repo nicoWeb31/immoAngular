@@ -28,7 +28,14 @@
               <span *ngIf="item.room && item.room !== '' "> {{ item.room }} piéce, vendu zu prix de {{ item.price }}</span>
             </p>
             <p><span *ngIf="item.price && item.price !== '' ">{{ item.price }} <i class="fas fa-euro-sign"></i></span></p>
+            <p>
+                <span class="text-danger" *ngIf="item.sold">Vendu</span>
+                <span class="text-success" *ngIf="!item.sold">A Vendre</span>
+              </p>
         </div>
+
+
+
 
         <div class="ml-auto">
           <button class="btn btn-primary" type="button" (click)="onEditPrprop(item)"><i class="far fa-edit" ></i></button>
@@ -122,6 +129,19 @@
             />
           </div>
         </div>
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="customSwitch1" formControlName='sold'>
+          <label class="custom-control-label" for="customSwitch1">
+
+            <span class="text-danger" *ngIf="propertiesForm.value.sold">Vendu</span>
+            <span class="text-success" *ngIf="!propertiesForm.value.sold">A Vendre</span>
+
+          </label>
+
+        </div>
+
+
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Annuler

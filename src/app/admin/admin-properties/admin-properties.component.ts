@@ -3,6 +3,7 @@ import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PropertiesService } from '../../services/properties.service';
 import { Subscription } from 'rxjs';
 import * as $ from 'jquery';
+import { Property } from 'src/app/interface/property'
 
 @Component({
   selector: 'app-admin-properties',
@@ -16,7 +17,7 @@ export class AdminPropertiesComponent implements OnInit {
 
   propertiesForm: FormGroup;
   propSubscription: Subscription;
-  properties: any[] = [];
+  properties: Property[] = [];
 
   indexToRemove;
   indexToUpdate;
@@ -34,7 +35,7 @@ export class AdminPropertiesComponent implements OnInit {
 
     this.initPropertiesForm();
     this.popServ.propertiesSubject.subscribe(
-      (data) =>{
+      (data: Property[]) =>{
         //data dans mon tableau porertie
         this.properties = data;
       }
@@ -51,7 +52,8 @@ export class AdminPropertiesComponent implements OnInit {
       surface:['',Validators.required],
       room:['',Validators.required],
       descr:'',
-      price:''
+      price:'',
+      sold:'',
 
     })
   }
@@ -62,7 +64,9 @@ export class AdminPropertiesComponent implements OnInit {
     // console.log(t);
     //console.log(this.propertiesForm.value)
 
-    const newProperty = this.propertiesForm.value;
+    const newProperty: Property = this.propertiesForm.value;
+
+
     //log du new tableau
     //console.log(this.properties);
     //si edit mode on fait un update sinon un crerate
@@ -107,7 +111,7 @@ export class AdminPropertiesComponent implements OnInit {
   // ===========================================================================
   // onEdit
   // ===========================================================================
-  onEditPrprop(property){
+  onEditPrprop(property: Property){
 
 
     //on passe en mode edit
@@ -121,6 +125,8 @@ export class AdminPropertiesComponent implements OnInit {
     this.propertiesForm.get('room').setValue(property.room);
     this.propertiesForm.get('descr').setValue(property.descr);
     this.propertiesForm.get('price').setValue(property.price);
+    this.propertiesForm.get('sold').setValue(property.sold);
+
 
     const i = this.properties.findIndex(
       (propEl)=>{

@@ -1,67 +1,161 @@
 <div class="rounded shadow bg-white p-5">
   <div class="row">
     <div class="col-12 d-flex">
-      <h2 class="font-weight-light"><i class="fas fa-home"></i> Biens imobilier</h2>
-      <button class="btn btn-primary ml-auto" type="button" data-toggle="modal" data-target="#propertiesFormModal"><i class="fas fa-plus"></i>  ajouter un bien</button>
+      <h2 class="font-weight-light">
+        <i class="fas fa-home"></i> Biens imobilier
+      </h2>
+      <button
+        class="btn btn-primary ml-auto"
+        type="button"
+        data-toggle="modal"
+        data-target="#propertiesFormModal"
+        (click) = "resteForm()"
+      >
+        <i class="fas fa-plus"></i> ajouter un bien
+      </button>
     </div>
   </div>
-  <hr class="mt-1 mb-5 bg-dark">
+  <hr class="mt-1 mb-5 bg-dark" />
+
   <div class="row">
+
+    <div class="col-12 shadow-sm p-4 mb-3 bg-ligth" *ngFor="let item of properties; let i = index">
+
+      <div class="d-flex">
+        <div>
+          <h3 class="font-weigth-normal"> {{ item.title }} </h3>
+          <p>  <span *ngIf="item.surface && item.surface != '' ">{{ item.category }} de {{  item.surface }} avec</span>
+              <span *ngIf="item.room && item.room !== '' "> {{ item.room }} piéce, vendu zu prix de {{ item.price }}</span>
+            </p>
+            <p><span *ngIf="item.price && item.price !== '' ">{{ item.price }} <i class="fas fa-euro-sign"></i></span></p>
+        </div>
+
+        <div class="ml-auto">
+          <button class="btn btn-primary" type="button" (click)="onEditPrprop(item)"><i class="far fa-edit" ></i></button>
+          <button class="btn btn-danger" (click)= "onDelteProp(i)" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="fas fa-trash"></i></button>
+
+
+        </div>
+      </div>
+
+    </div>
 
   </div>
 </div>
 
-
 <!-- Modal -->
-<div class="modal fade" id="propertiesFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div
+  class="modal fade"
+  id="propertiesFormModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <!-- form -->
-      <form [formGroup]="propertiesForm" (ngSubmit)="onSubmitPropertiesForm()" >
+      <form [formGroup]="propertiesForm" (ngSubmit)="onSubmitPropertiesForm()">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalCenterTitle">Editer un bien</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title" id="exampleModalCenterTitle">
+            Editer un bien
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Titre" formControlName='title' >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Titre"
+              formControlName="title"
+            />
           </div>
 
           <div class="form-group">
-            <select formControlName="category" class="custom-select" >
-
-              <option value="appartemant">Appartment</option>
-              <option value="maison">Maison</option>
+            <select formControlName="category" class="custom-select">
+              <option value="Appartement">Appartement</option>
+              <option value="Maison">Maison</option>
             </select>
           </div>
 
-
-
           <div class="form-row">
             <div class="form-group col-6">
-              <input type="text" class="form-control" placeholder="Surface m2" formControlName='surface' >
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Surface m2"
+                formControlName="surface"
+              />
             </div>
             <div class="form-group col-6">
-              <input type="number" class="form-control" placeholder="Nombre de Piece" formControlName='room' >
-
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Nombre de Piece"
+                formControlName="room"
+              />
             </div>
           </div>
           <div class="form-group">
-            <textarea class="form-control w-100" cols="30" rows="4" placeholder="Déscription" formControlName='descr' ></textarea>
-
+            <textarea
+              class="form-control w-100"
+              cols="30"
+              rows="4"
+              placeholder="Déscription"
+              formControlName="descr"
+            ></textarea>
           </div>
           <div class="form-group">
-            <input type="number" class="form-control" placeholder="Prix" formControlName='price' >
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Prix"
+              formControlName="price"
+            />
           </div>
-
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-primary" type="submit" [disabled]="propertiesForm.invalid"  >Sauvgarder</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Annuler
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="propertiesForm.invalid"
+
+          >
+            Sauvgarder
+          </button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal alert suppr-->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">suprimer ce bien</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuller</button>
+        <button type="button" class="btn btn-danger" (click)="onConfirmDeletePrpop()">Supprimer</button>
+      </div>
     </div>
   </div>
 </div>

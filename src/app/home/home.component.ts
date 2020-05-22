@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.properties = data;
         }
     );
+    this.PropertiesService.getProperties();
     this.PropertiesService.emitProperties();
 
   }
@@ -46,6 +47,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   //dechargement desabonnemrnt
   ngOnDestroy(){
     this.propertiesSubscription.unsubscribe();
+  }
+
+  //show on property
+  showOneProperty(i){
+
   }
 
 }

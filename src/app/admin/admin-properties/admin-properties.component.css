@@ -1,0 +1,10 @@
+
+._deletePhoto{
+  top : 0;
+  right: 0;
+  cursor: pointer;
+}
+
+._deletePhoto i{
+font-size : 20px;
+}

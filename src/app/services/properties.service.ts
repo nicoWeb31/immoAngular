@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Property } from 'src/app/interface/property';
 import * as firbase from 'firebase';
+import { promise } from 'protractor';
+import { resolve } from 'dns';
+import { rejects } from 'assert';
 
 
 
@@ -86,6 +89,51 @@ export class PropertiesService {
       )
 
   }
+
+  uploadFile(file: File)
+  {
+    return new Promise((resolve,reject)=>{
+
+      const uniqId = Date.now().toString();
+      const upload = firbase.storage().ref().child('images/properties/' + uniqId + file.name).put(file);
+      upload.on(firbase.storage.TaskEvent.STATE_CHANGED,
+        //pending
+        ()=>{
+          console.log('chargement')
+        },
+        //error
+        (err)=>{
+          console.error(err);
+          reject(err);
+        },
+        //succes catch link url file
+        ()=>{
+          upload.snapshot.ref.getDownloadURL().then(
+            (downLoadUrl)=>{
+              resolve(downLoadUrl);
+            }
+          )
+        }
+        )
+    }
+    )}
+
+    // =========================================================================
+    // remove files
+    // =========================================================================
+    removeFile(fileLink: string){
+      if(fileLink){
+        //on recupere l'emplacement du fichier
+        const storageRef = firbase.storage().refFromURL(fileLink);
+        storageRef.delete().then(
+          ()=>{
+            console.log('delete ok');
+          }
+        ).catch((err)=>{
+          console.error(err)
+        })
+      }
+    }
 
 
 }

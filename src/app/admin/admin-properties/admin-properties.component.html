@@ -19,32 +19,40 @@
 
   <div class="row">
 
-    <div class="col-12 shadow-sm p-4 mb-3 bg-ligth" *ngFor="let item of properties; let i = index">
+    <div class="d-flex">
+      <div>
+        <div class="col-12 shadow-sm p-4 mb-3 bg-ligth" *ngFor="let item of properties; let i = index">
+          <div class="row">
+            <div class="col-3">
+              <div *ngFor="let photo of item.photos; let first = first ">
+                <img *ngIf="first" [src]="photo" alt="" class="w-100">
+              </div>
+            </div>
+            <div class="col-9">
+              <h3 class="font-weigth-normal"> {{ item.title }} </h3>
+              <p>  <span *ngIf="item.surface && item.surface != '' ">{{ item.category }} de {{  item.surface }} avec</span>
+                  <span *ngIf="item.room && item.room !== '' "> {{ item.room }} piéce, vendu zu prix de {{ item.price }}</span>
+                </p>
+                <p><span *ngIf="item.price && item.price !== '' ">{{ item.price }} <i class="fas fa-euro-sign"></i></span></p>
+                <p>
+                    <span class="text-danger" *ngIf="item.sold">Vendu</span>
+                    <span class="text-success" *ngIf="!item.sold">A Vendre</span>
+                  </p>
+            </div>
 
-      <div class="d-flex">
-        <div>
-          <h3 class="font-weigth-normal"> {{ item.title }} </h3>
-          <p>  <span *ngIf="item.surface && item.surface != '' ">{{ item.category }} de {{  item.surface }} avec</span>
-              <span *ngIf="item.room && item.room !== '' "> {{ item.room }} piéce, vendu zu prix de {{ item.price }}</span>
-            </p>
-            <p><span *ngIf="item.price && item.price !== '' ">{{ item.price }} <i class="fas fa-euro-sign"></i></span></p>
-            <p>
-                <span class="text-danger" *ngIf="item.sold">Vendu</span>
-                <span class="text-success" *ngIf="!item.sold">A Vendre</span>
-              </p>
-        </div>
 
 
 
+            <div class="ml-auto">
+              <button class="btn btn-primary" type="button" (click)="onEditPrprop(item)"><i class="far fa-edit" ></i></button>
+              <button class="btn btn-danger" (click)= "onDelteProp(i)" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="fas fa-trash"></i></button>
 
-        <div class="ml-auto">
-          <button class="btn btn-primary" type="button" (click)="onEditPrprop(item)"><i class="far fa-edit" ></i></button>
-          <button class="btn btn-danger" (click)= "onDelteProp(i)" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="fas fa-trash"></i></button>
 
+            </div>
+          </div>
 
         </div>
       </div>
-
     </div>
 
   </div>
@@ -128,6 +136,40 @@
               formControlName="price"
             />
           </div>
+
+          <!-- ============================================================= -->
+          <!-- photo -->
+          <!-- ============================================================= -->
+          <div class="row">
+            <div *ngFor="let photo of photoAdded; let i = index" class="col-4 border border-secondary rounded m-1 p-1 bg-ligth position-relative">
+              <span class="text-danger position-absolute mr-1 _deletePhoto " (click) = deletOnePhoto(i) >
+                <i class="fas fa-times"></i>
+              </span>
+              <img class="w-100" [src]="photo" >
+            </div>
+          </div>
+
+
+        <div class="form-row">
+          <div class="col-9">
+            <div class="input-group mb-3">
+
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile01" (change)="onUploadFile($event)" >
+                <label class="custom-file-label" for="inputGroupFile01">Choisir une images</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-3" *ngIf="photoUploading">
+            <div class="spinner-border m-5" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+
+
+
+
         </div>
         <div class="custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" id="customSwitch1" formControlName='sold'>

@@ -23,6 +23,10 @@ export class AdminPropertiesComponent implements OnInit {
   indexToUpdate;
   editMode = false;
 
+  photoUploading = false;
+  photoUploded = false;
+  photoAdded: any[] = [];
+
 
 
   constructor(
@@ -71,6 +75,9 @@ export class AdminPropertiesComponent implements OnInit {
     newProperty.sold = this.propertiesForm.get('sold').value ? this.propertiesForm.get('sold').value : false ;
 
 
+    newProperty.photos = this.photoAdded ? this.photoAdded : [];
+
+
     //log du new tableau
     //console.log(this.properties);
     //si edit mode on fait un update sinon un crerate
@@ -91,6 +98,7 @@ export class AdminPropertiesComponent implements OnInit {
   resteForm(){
     this.propertiesForm.reset();
     this.editMode=false;
+    this.photoAdded = [];
   }
 
   //delete prpperties
@@ -107,6 +115,18 @@ export class AdminPropertiesComponent implements OnInit {
   }
 
   onConfirmDeletePrpop(){
+    //remove file
+    // if(this.properties[this.indexToRemove].photo && this.properties[this.indexToRemove].photo !== ""){
+
+    //   this.popServ.removeFile(this.properties[this.indexToRemove].photo);
+    // }
+
+    this.properties[this.indexToRemove].photos.forEach(
+      (item)=>{
+        this.popServ.removeFile(item)
+      }
+    )
+
     this.popServ.deleteProperties(this.indexToRemove);
     $('#exampleModalLong').modal('hide');
   }
@@ -127,9 +147,11 @@ export class AdminPropertiesComponent implements OnInit {
     this.propertiesForm.get('category').setValue(property.category);
     this.propertiesForm.get('surface').setValue(property.surface);
     this.propertiesForm.get('room').setValue(property.room);
-    this.propertiesForm.get('descr').setValue(property.descr);
+    this.propertiesForm.get('descr').setValue(property.descr ? property.descr : '');
     this.propertiesForm.get('price').setValue(property.price);
     this.propertiesForm.get('sold').setValue(property.sold);
+    this.photoAdded = property.photos ? property.photos : [];
+
 
 
     const i = this.properties.findIndex(
@@ -139,9 +161,37 @@ export class AdminPropertiesComponent implements OnInit {
     )
     this.indexToUpdate = i;
 
+  }
 
+  onUploadFile(event){
+    console.log(event);
+    this.photoUploading = true;
 
+//si j'ai deja une photo je delete l'ancienne
+    // if(this.photoUrl && this.photoUrl !== ''){
+    //   this.popServ.removeFile(this.photoUrl);
+    // }
+
+    this.popServ.uploadFile(event.target.files[0]).then(
+      (url: string)=>{
+        this.photoAdded.push(url);
+        this.photoUploading = false;
+        this.photoUploded = true;
+        setTimeout(()=>{
+          this.photoUploded = false;
+        },4000)
+      }
+    );
+  }
+
+  deletOnePhoto(i){
+    this.popServ.removeFile(this.photoAdded[i]);
+    //maj tableau de photo
+    this.photoAdded.splice(i,1);
 
   }
+
+
+
 
 }

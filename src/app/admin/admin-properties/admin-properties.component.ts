@@ -42,6 +42,9 @@ export class AdminPropertiesComponent implements OnInit {
     );
     //emission des donner
     this.popServ.emitProperties();
+
+    //recup des data
+    this.popServ.getProperties();
   }
 
 
@@ -65,6 +68,7 @@ export class AdminPropertiesComponent implements OnInit {
     //console.log(this.propertiesForm.value)
 
     const newProperty: Property = this.propertiesForm.value;
+    newProperty.sold = this.propertiesForm.get('sold').value ? this.propertiesForm.get('sold').value : false ;
 
 
     //log du new tableau
